@@ -1,3 +1,5 @@
+//THIS SHOULD BE RAN ON editor.p5js.org
+
 //Enter a username
 //Buy stocks with 'b' key and sell stocks with 's' key
 //When you buy a stock you can create a stop-loss order so that if a stock dips below a certain price it automatically sells the stock
