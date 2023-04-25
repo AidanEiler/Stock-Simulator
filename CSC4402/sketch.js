@@ -1,4 +1,4 @@
-//Enter a username
+//Enter a username 
 //Buy stocks with 'b' key and sell stocks with 's' key
 //When you buy a stock you can create a stop-loss order so that if a stock dips below a certain price it automatically sells the stock
 // Scroll through different stocks with 'g' and 'h' key
@@ -29,15 +29,22 @@ class Stock {
   }
 }
 
-// Initialize stocks
-function initStocks() {
-  let stock1 = new Stock("AAPL", 100, 0.1);
-  let stock2 = new Stock("GOOG", 200, 0.2);
-  let stock3 = new Stock("AMZN", 1500, 0.3);
-  let stock4 = new Stock("TSLA", 500, 0.4);
-  let stock5 = new Stock("FB", 300, 0.5);
-  stocks.push(stock1, stock2, stock3, stock4, stock5);
+// Initialize stocks 
+async function initStocks() {
+  try {
+    const response = await fetch('http://localhost:3000/stocks');
+    if (!response.ok) {
+      console.error('Error fetching stocks:', response.statusText);
+      return;
+    }
+    const data = await response.json();
+    stocks = data.map(stock => new Stock(stock.ticker, stock.price, stock.volatility));
+  } catch (error) {
+    console.error('Error initializing stocks:', error);
+  }
 }
+
+  
 
 async function updateUserCashBalance() {
   try {
@@ -75,6 +82,21 @@ async function fetchUserCashBalance(userId) {
   }
 }
 
+async function fetchStocks(){
+  try{
+    const response = await fetch ('http://localhost:3000/stocks');
+    
+    if (!response.ok) {
+      console.error('Error fetching stocks:', response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    stocks = data.map((stock) => new Stock(stock.ticker, stock.current_price, stock.volatility));
+  }catch (error){
+    console.error("Error fetching stocks:", error);
+  }
+}
 
 
 // Updates prices of all stocks
@@ -204,6 +226,7 @@ async function registerUser(username, password) {
     console.error('Error registering user:', error);
   }
 }
+
 
 async function loginUser(username, password) {
   try {
