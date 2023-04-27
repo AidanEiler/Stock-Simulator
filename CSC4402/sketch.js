@@ -10,6 +10,7 @@ let userCash = 1000// user's starting cash
 let stockIndex = 0; // index of the currently selected stock
 let selectedStockIndex = -1; // index of the currently selected stock in the user's portfolio
 let userName;
+let isLoggedIn = false;
 // Defines stock object
 class Stock {
   constructor(ticker, startingPrice, volatility) {
@@ -250,56 +251,75 @@ async function loginUser(username, password) {
 }
 
 
-async function setup() {
-  createCanvas(400, 400);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
   initStocks();
 
-  // Ask for user registration or login
-  const action = prompt('Do you want to register or log in? (Type "register" or "login")').toLowerCase();
-  if (action === 'register') {
-    const username = prompt('Enter a username:');
-    const password = prompt('Enter a password:');
-    const result = await registerUser(username, password);
-    if (result && result.message === 'User registered') {
-      userName = username;
-      alert('Registration successful');
-    } else {
-      alert('Registration failed');
-    }
-  } else if (action === 'login') {
-    const username = prompt('Enter your username:');
-    const password = prompt('Enter your password:');
+  const loginForm = document.getElementById('login-form');
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
     const result = await loginUser(username, password);
     if (result && result.message === 'Login successful') {
       userName = username;
+      isLoggedIn = true; // Set isLoggedIn to true
       alert('Login successful');
       await fetchUserCashBalance(result.userId);
-    }  else {
+      document.getElementById('form-container').style.display = 'none';
+    } else {
       alert('Login failed');
     }
+  });
+
+  const registerForm = document.getElementById('register-form');
+  registerForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const username = document.getElementById('register-username').value;
+  const password = document.getElementById('register-password').value;
+  const result = await registerUser(username, password);
+  if (result && result.message === 'User registered') {
+    userName = username;
+    isLoggedIn = true; // Set isLoggedIn to true
+    alert('Registration successful');
+    document.getElementById('form-container').style.display = 'none';
   } else {
-    alert('Invalid action');
+    alert('Registration failed');
   }
+});
 }
 
 
 function draw() {
-  background(220);
+  background(255);
+  if (!isLoggedIn) {
+    fill(0);
+    textSize(20);
+    textAlign(CENTER);
+   // text("Please log in or register", width/2, height/2);
+    return;
+  }
+  if(isLoggedIn){
+  fill(0);
   updatePrices();
   displayStock();
   displayPortfolio();
+  }
 }
+
 function keyPressed() {
-  if (key == "b") {
-    buyStock();
-  } else if (key == "s") {
-    sellStock();
-  } else if (key == "g") {
-    stockIndex = (stockIndex - 1 + stocks.length) % stocks.length;
-    selectedStockIndex = -1;
-  } else if (key == "h") {
-    stockIndex = (stockIndex + 1) % stocks.length;
-    selectedStockIndex = -1;
+  if (isLoggedIn) {
+    if (key == "b") {
+      buyStock();
+    } else if (key == "s") {
+      sellStock();
+    } else if (key == "g") {
+      stockIndex = (stockIndex - 1 + stocks.length) % stocks.length;
+      selectedStockIndex = -1;
+    } else if (key == "h") {
+      stockIndex = (stockIndex + 1) % stocks.length;
+      selectedStockIndex = -1;
+    }
   }
 }
 
@@ -316,3 +336,6 @@ function mousePressed() {
     y -= 20;
   }
 }  
+
+
+
