@@ -1,3 +1,4 @@
+
 // CSC4402/server.js
 const express = require('express');
 const mysql = require('mysql');
@@ -84,70 +85,53 @@ app.get('/users/:userId', (req, res) => {
   });
 });
 
-// // Fetch stock data
-// app.get('/stocks', (req, res) => {
-//   const sql = "SELECT * FROM stocks";
-//   con.query(sql, (err, result) => {
-//     if (err) throw err;
-//     res.send(result);
-//   });
-// });
+// Fetch stock data
+app.get('/stocks', (req, res) => {
+  const sql = "SELECT * FROM stocks";
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
 
-// // Buy stock
-// app.post('/user_stocks/buy', (req, res) => {
-//   const { userId, stockId, shares, buyPrice } = req.body;
-//   const sql = "INSERT INTO user_stocks (user_id, stock_id, shares, buy_price) VALUES (?)";
-//   con.query(sql, [[userId, stockId, shares, buyPrice]], (err, result) => {
-//     if (err) throw err;
-//     res.send({ message: 'Stock purchased' });
-//   });
-// });
+// Fetch user's portfolio
+app.get('/users/:userId/portfolio', (req, res) => {
+  const userId = req.params.userId;
+  const sql = "SELECT * FROM portfolio WHERE user_id = ?";
+  con.query(sql, [userId], (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
 
-// // Sell stock
-// app.post('/user_stocks/sell', (req, res) => {
-//   const { userId, stockId, shares } = req.body;
-//   const sql = "UPDATE user_stocks SET shares = shares - ? WHERE user_id = ? AND stock_id = ?";
-//   con.query(sql, [shares, userId, stockId], (err, result) => {
-//     if (err) throw err;
-//     res.send({ message: 'Stock sold' });
-//   });
-// });
+// Buy stock and add to user's portfolio
+app.post('/users/:userId/buy-stock', (req, res) => {
+  const userId = req.params.userId;
+  const { ticker, shares, buyPrice, stopLossPrice } = req.body;
+  const sql = "INSERT INTO portfolio (user_id, ticker, shares, buy_price, stop_loss_price) VALUES (?, ?, ?, ?, ?)";
+  con.query(sql, [userId, ticker, shares, buyPrice, stopLossPrice], (err, result) => {
+    if (err) throw err;
+    res.send({ message: 'Stock bought' });
+  });
+});
 
-// // Set stop-loss order
-// app.put('/user_stocks/stop_loss/:userStockId', (req, res) => {
-//   const userStockId = req.params.userStockId;
-//   const { stopLossPrice } = req.body;
-//   const sql = "UPDATE user_stocks SET stop_loss_price = ? WHERE id = ?";
-//   con.query(sql, [stopLossPrice, userStockId], (err, result) => {
-//     if (err) throw err;
-//     res.send({ message: 'Stop-loss order set' });
-//   });
-// });
+// Sell stock and remove from user's portfolio
+app.post('/users/:userId/sell-stock', (req, res) => {
+  const userId = req.params.userId;
+  const { ticker, shares } = req.body;
+  const sql = "DELETE FROM portfolio WHERE user_id = ? AND ticker = ? AND shares = ?";
+  con.query(sql, [userId, ticker, shares], (err, result) => {
+    if (err) throw err;
+    res.send({ message: 'Stock sold' });
+  });
+});
 
-// // Fetch user stocks
-// app.get('/user_stocks/:userId', (req, res) => {
-//   const userId = req.params.userId;
-//   const sql = `SELECT user_stocks.id, user_stocks.stock_id, stocks.ticker, user_stocks.shares, user_stocks.buy_price, user_stocks.stop_loss_price
-//                FROM user_stocks
-//                JOIN stocks ON user_stocks.stock_id = stocks.id
-//                WHERE user_stocks.user_id = ?`;
-//   con.query(sql, [userId], (err, result) => {
-//     if (err) throw err;
-//     res.send(result);
-//   });
-// });
 
-// //Remove stop-loss order
-// app.put('/user_stocks/remove_stop_loss/:userStockId', (req, res) => {
-//   const userStockId = req.params.userStockId;
-//   const sql = "UPDATE user_stocks SET stop_loss_price = NULL WHERE id = ?";
-//   con.query(sql, [userStockId], (err, result) => {
-//     if (err) throw err;
-//     res.send({ message: 'Stop-loss order removed' });
-//   });
-// });
 
 
 app.listen(port, function() {
   console.log('Server listening on port ' + port);
 });
+
+
+
