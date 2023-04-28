@@ -1,18 +1,15 @@
-html, body {
+html, body{
   margin: 0;
   padding: 0;
 }
+
 
 canvas {
   margin: 100px;
   display: block;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
+
 
 #form-container {
   max-width: 500px;
@@ -20,6 +17,7 @@ body {
   padding: 50px;
   background-color: #fff;
   border-radius: 5px;
+  border-color: #4CAF50;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -36,8 +34,9 @@ form {
 
 label {
   display: block;
-  font-size: 18px;
-  margin-bottom: 5px;
+  font-size: 22px;
+  margin-bottom: -30px;
+  font-weight: bold;
 }
 
 input[type="text"],
@@ -45,27 +44,27 @@ input[type="password"] {
   display: block;
   width: 100%;
   padding: 10px;
+  border-color: #4CAF50;
   font-size: 16px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
+  margin-bottom: 25px;
+  border: 1px solid #4CAF50;
   border-radius: 5px;
 }
 
 button[type="submit"] {
   display: block;
-  width: 100%;
-  padding: 10px;
-  font-size: 18px;
+  margin: 0 auto;
+  width: 65%;
+  height: 45px;
+  padding: 10px 0;
   background-color: #4CAF50;
-  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  color: #1b431d;
 }
 
-button[type="submit"]:hover {
-  background-color: #3e8e41;
-}
 
 #toggle-form-btn {
   display: block;
@@ -83,8 +82,89 @@ button[type="submit"]:hover {
 h1 {
   text-align: center;
   margin-top: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+  color: #3e8e41;
+  font-size: 60px;
+  letter-spacing: -3px;
 }
 
 h3{
   text-align: center;
+  margin-top: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+  color: #3e8e41;
+  font-size: xxx-large;
+  letter-spacing: -3px;
 }
+
+h4{
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+  color: #3e8e41;
+}
+
+
+h5{
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+  color: #3e8e41;
+}
+
+h6{
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+  color: #2d692f;
+  font-size: xx-large;
+}
+
+
+::-webkit-input-placeholder {
+  /* Change the font family and size */
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+:-moz-placeholder {
+  /* Change the font family and size */
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+::-moz-placeholder {
+  /* Change the font family and size */
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+:-ms-input-placeholder {
+  /* Change the font family and size */
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+#toggle-form-btn {
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+#login-form {
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+#register-form {
+  font-family: 'Courier New', Courier, monospace;
+  color: #3e8e41;
+
+}
+
+
+
