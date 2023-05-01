@@ -10,6 +10,7 @@ app.use(cors());
 
 app.use(express.json());
 
+//This connects to Ford's MySQL database
 const con = mysql.createConnection({
   host: "fordsdb.duckdns.org",
   user: "root",

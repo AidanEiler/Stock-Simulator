@@ -3,6 +3,9 @@
 //When you buy a stock you can create a stop-loss order so that if a stock dips below a certain price it automatically sells the stock
 // Scroll through different stocks with 'g' and 'h' key
 
+// for localhost, change to "localhost"
+let host = "localhost";
+//let host = "fordsdb.duckdns.org";
 
 let stocks = []; // array of stock objects
 let portfolio = []; // array of user's stock holdings
@@ -33,7 +36,7 @@ class Stock {
 // Initialize stocks 
 async function initStocks() {
   try {
-    const response = await fetch('http://localhost:3000/stocks');
+    const response = await fetch('http://'+host+':3000/stocks');
     if (!response.ok) {
       console.error('Error fetching stocks:', response.statusText);
       return;
@@ -49,7 +52,7 @@ async function initStocks() {
 
 async function updateUserCashBalance() {
   try {
-    const response = await fetch('http://localhost:3000/users/update-cash-balance', {
+    const response = await fetch('http://'+host+':3000/users/update-cash-balance', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +73,7 @@ async function updateUserCashBalance() {
 }
 async function fetchUserCashBalance(userId) {
   try {
-    const response = await fetch(`http://localhost:3000/users/${userId}/cash-balance`);
+    const response = await fetch('http://'+host+':3000/users/${userId}/cash-balance');
     if (!response.ok) {
       console.error('Error fetching cash balance:', response.statusText);
       return;
@@ -85,7 +88,7 @@ async function fetchUserCashBalance(userId) {
 
 async function fetchStocks(){
   try{
-    const response = await fetch ('http://localhost:3000/stocks');
+    const response = await fetch ('http://'+host+':3000/stocks');
     
     if (!response.ok) {
       console.error('Error fetching stocks:', response.statusText);
@@ -162,6 +165,17 @@ function displayPortfolio() {
   }
 }
 
+// Advances quarter
+async function updateQuarter(quarterInfo) {
+  //fetches my local json database
+  if(typeof(jsonData) == "undefined") {
+    response = await fetch("./FinancialInfo.json");
+    jsonData = await response.json();
+  }
+
+  jsonData.quarters.push(quarterInfo);
+  console.log(jsonData);
+}
 
 // Buys stock
 async function buyStock() {
@@ -214,7 +228,7 @@ async function sellStock() {
 
 async function registerUser(username, password) {
   try {
-    const response = await fetch('http://localhost:3000/users/register', {
+    const response = await fetch('http://'+host+':3000/users/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -231,7 +245,7 @@ async function registerUser(username, password) {
 
 async function loginUser(username, password) {
   try {
-    const response = await fetch('http://localhost:3000/users/login', {
+    const response = await fetch('http://'+host+':3000/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -289,6 +303,11 @@ function setup() {
 });
 }
 
+//global variables for draw function
+quarterLength = 910;
+//every 100 frames is a day
+daysPassed = 0;
+startingCash = userCash;
 
 function draw() {
   background(255);
@@ -300,10 +319,26 @@ function draw() {
     return;
   }
   if(isLoggedIn){
-  fill(0);
-  updatePrices();
-  displayStock();
-  displayPortfolio();
+    if(daysPassed % quarterLength == 0) {
+      //updates user cash
+      //fetchUserCashBalance(result.userId);
+
+      let quarterInfo = {};
+      quarterInfo.quarterNumber = daysPassed/quarterLength;
+      quarterInfo.quarterlyGains = userCash - startingCash;
+
+      updateQuarter(quarterInfo);
+
+      startingCash = userCash;
+    }
+    
+    fill(0);
+    updatePrices();
+    displayStock();
+    displayPortfolio();
+
+    daysPassed++;
+    //console.log(daysPassed);
   }
 }
 
