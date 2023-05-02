@@ -3,13 +3,16 @@ html, body{
   padding: 0;
 }
 
-
 canvas {
-  margin: 100px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
   display: block;
+  border: 3px !important;
+  border-color: #000;
+  z-index: 9;
 }
-
-
 
 #form-container {
   max-width: 500px;
@@ -17,14 +20,8 @@ canvas {
   padding: 50px;
   background-color: #fff;
   border-radius: 5px;
-  border-color: #4CAF50;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 28px;
-  font-weight: 400;
+  border-color: #000;
+  box-shadow: 0 0 10px #1db954;
 }
 
 form {
@@ -35,7 +32,7 @@ form {
 label {
   display: block;
   font-size: 22px;
-  margin-bottom: -30px;
+  margin-bottom: -20px;
   font-weight: bold;
 }
 
@@ -47,7 +44,7 @@ input[type="password"] {
   border-color: #4CAF50;
   font-size: 16px;
   margin-bottom: 25px;
-  border: 1px solid #4CAF50;
+  border: 1px solid #1db954;
   border-radius: 5px;
 }
 
@@ -57,14 +54,19 @@ button[type="submit"] {
   width: 65%;
   height: 45px;
   padding: 10px 0;
-  background-color: #4CAF50;
+  background-color: #1db954;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Courier New', Courier, monospace;
-  color: #1b431d;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #ffffff;
+  transition: 0.3s;
 }
 
+button[type="submit"]:hover{
+  background-color: #000;
+  color: white;
+}
 
 #toggle-form-btn {
   display: block;
@@ -75,6 +77,11 @@ button[type="submit"] {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+#toggle-form-btn:hover{
+  color: #000;
 }
 
 
@@ -82,89 +89,91 @@ button[type="submit"] {
 h1 {
   text-align: center;
   margin-top: 10px;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: 1000;
-  color: #3e8e41;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
+  color: #000000;
   font-size: 60px;
-  letter-spacing: -3px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 28px;
+  font-weight: 400;
 }
 
 h3{
   text-align: center;
   margin-top: 10px;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: 1000;
-  color: #3e8e41;
-  font-size: xxx-large;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: normal;
+  color: #000000;
+  font-size: xx-large;
   letter-spacing: -3px;
 }
 
 h4{
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: 1000;
-  color: #3e8e41;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: normal;
+  color: #1db954;
+  font-size: 15px;
 }
 
 
 h5{
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 1000;
   color: #3e8e41;
-}
-
-h6{
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: 1000;
-  color: #2d692f;
-  font-size: xx-large;
 }
 
 
 ::-webkit-input-placeholder {
   /* Change the font family and size */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #3e8e41;
 
 }
 
 :-moz-placeholder {
   /* Change the font family and size */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #3e8e41;
 
 }
 
 ::-moz-placeholder {
   /* Change the font family and size */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #3e8e41;
 
 }
 
 :-ms-input-placeholder {
   /* Change the font family and size */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #3e8e41;
 
 }
 
 #toggle-form-btn {
-  font-family: 'Courier New', Courier, monospace;
-  color: #3e8e41;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #57F287;
 
 }
 
 #login-form {
-  font-family: 'Courier New', Courier, monospace;
-  color: #3e8e41;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #1db954;
 
 }
 
 #register-form {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #3e8e41;
 
 }
 
-
-
+.icon {
+  height: 20px;
+  width: 20px;
+  display: block;
+}

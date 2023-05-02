@@ -14,6 +14,7 @@ let stockIndex = 0; // index of the currently selected stock
 let selectedStockIndex = -1; // index of the currently selected stock in the user's portfolio
 let userName;
 let isLoggedIn = false;
+let infoShown = false;
 // Defines stock object
 class Stock {
   constructor(ticker, startingPrice, volatility) {
@@ -47,8 +48,6 @@ async function initStocks() {
     console.error('Error initializing stocks:', error);
   }
 }
-
-  
 
 async function updateUserCashBalance() {
   try {
@@ -85,7 +84,6 @@ async function fetchUserCashBalance(userId) {
     console.error('Error fetching cash balance:', error);
   }
 }
-
 async function fetchStocks(){
   try{
     const response = await fetch ('http://'+host+':3000/stocks');
@@ -102,7 +100,6 @@ async function fetchStocks(){
   }
 }
 
-
 // Updates prices of all stocks
 function updatePrices() {
   for (let i = 0; i < stocks.length; i++) {
@@ -117,7 +114,6 @@ function updatePrices() {
   }
 }
 
-// Displays stock ticker, price, and history
 function displayStock() {
   let stock = stocks[stockIndex];
   let price = stock.price.toFixed(2);
@@ -134,19 +130,21 @@ function displayStock() {
   let endX = width - 10;
   let startY = height - 30;
   let endY = 100;
+  let historyLength = 500; // added this line
+  let startIndex = Math.max(0, history.length - historyLength); // added this line
   stroke(color);
-  for (let i = 0; i < history.length - 1; i++) {
-    let x1 = map(i, 0, history.length - 2, startX, endX);
+  for (let i = startIndex; i < history.length - 1; i++) { // modified this line
+    let x1 = map(i - startIndex, 0, historyLength - 1, startX, endX); // modified this line
     let y1 = map(history[i], minY, maxY, startY, endY);
-        let x2 = map(i + 1, 0, history.length - 2, startX, endX);
+    let x2 = map(i + 1 - startIndex, 0, historyLength - 1, startX, endX); // modified this line
     let y2 = map(history[i + 1], minY, maxY, startY, endY);
     line(x1, y1, x2, y2);
   }
 }
 
-// Displays user portfolio
-function displayPortfolio() {
-  fill(255);
+function displayPortfolio() {  
+  fill(0);
+  noStroke();
   textAlign(LEFT);
   text("User: " + userName + ", Cash: $" + userCash.toFixed(2), 10, height - 10);
   let startY = height - 50;
@@ -158,6 +156,7 @@ function displayPortfolio() {
     let percentChange = ((change / price) * 100).toFixed(2);
     let color = (change >= 0) ? "green" : "red";
     fill(color);
+    textSize(10);
     rect(0, startY - 20, width, 20);
     fill(255); // add this line
     text(stock.ticker + ": " + stock.shares + " shares @ " + price + " (" + change + ", " + percentChange + "%) - Value: $" + value, 10, startY - 5);
@@ -224,8 +223,6 @@ async function sellStock() {
   }
 }
 
-
-
 async function registerUser(username, password) {
   try {
     const response = await fetch('http://'+host+':3000/users/register', {
@@ -241,7 +238,6 @@ async function registerUser(username, password) {
     console.error('Error registering user:', error);
   }
 }
-
 
 async function loginUser(username, password) {
   try {
@@ -264,11 +260,10 @@ async function loginUser(username, password) {
   }
 }
 
-
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(500, 500);
   initStocks();
-
+  frameRate(15);
   const loginForm = document.getElementById('login-form');
   loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -277,7 +272,7 @@ function setup() {
     const result = await loginUser(username, password);
     if (result && result.message === 'Login successful') {
       userName = username;
-      isLoggedIn = true; // Set isLoggedIn to true
+      isLoggedIn = true; 
       alert('Login successful');
       await fetchUserCashBalance(result.userId);
       document.getElementById('form-container').style.display = 'none';
@@ -336,10 +331,24 @@ function draw() {
     updatePrices();
     displayStock();
     displayPortfolio();
-
+    drawInfoBtn();
     daysPassed++;
     //console.log(daysPassed);
   }
+}
+
+function drawInfoBtn(){
+  fill(29, 185, 84);
+  noStroke();
+  square(474,1,25);
+  fill(255);
+  rect(485, 12, 3, 10);
+  ellipseMode(CENTER);
+  ellipse(486.5, 6.5, 4, 4);
+}
+
+function showInfo(){
+  alert('Press G and H to cycle through stocks.\nPress B to buy.\nSelect a stock in your portfolio by clicking its green bar.\nPress S to sell.');
 }
 
 function keyPressed() {
@@ -359,6 +368,12 @@ function keyPressed() {
 }
 
 function mousePressed() {
+  if (mouseX > 475 && mouseX < 500 && mouseY > 0 && mouseY < 25){
+    console.log("button clicked");
+    infoShown = !infoShown;
+    showInfo();
+  }
+  
   if (mouseY < height - 50) {
     selectedStockIndex = -1;
   }
@@ -370,7 +385,4 @@ function mousePressed() {
     }
     y -= 20;
   }
-}  
-
-
-
+}

@@ -3,16 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Sim</title>
+    <title>Business Major Simulator</title>
+    <link rel="icon" type="image/png" href="/stonks.png">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="node_modules/p5/lib/p5.min.js"></script>
     <script src="node_modules/p5/lib/addons/p5.sound.min.js"></script>
   </head>
   <body>
-    <h1>Stock Sim</h1>
+    <div id="header-container">
+      <h1>Business Major Simulator</h1>
+    </div>
     <div id="form-container">
-      <form id="login-form">
-        <h3>Login</h3>
+        <form id="login-form">
+        <h3>Log in to the <span style="color: rgb(0, 182, 0);">Future</span></h3>
         <div class="form-group">
           <label for="login-username"><h4>Username</h4></label>
           <input type="text" id="login-username" placeholder="Username" class="form-control" required />
@@ -24,7 +27,7 @@
         <button type="submit" class="btn btn-primary" style="font-size: 16px;", color="1d441e">Submit</button>
       </form>
       <form id="register-form" style="display:none">
-        <h3>Register</h3>
+        <h3>Join the <span style="color: rgb(0, 182, 0);">Future</span> of Business</h3>
         <div class="form-group">
           <label for="register-username"><h4>Username</h4></label>
           <input type="text" id="register-username" placeholder="Username" class="form-control" required />
@@ -33,9 +36,9 @@
           <label for="register-password"><h4>Password</h4></label>
           <input type="password" id="register-password" placeholder="Password" class="form-control" required />
         </div>
-        <button type="submit" class="btn btn-primary"><h6>Submit</h6></button>
+        <button type="submit" class="btn btn-primary" style="font-size: 16px;", color="1d441e">Submit</button>
       </form>
-      <button id="toggle-form-btn" class="btn btn-secondary"><h4>Don't have an account? Register here</h4></button>
+      <button id="toggle-form-btn" class="btn btn-secondary" ><h4>Not yet enlightened?</h4></button>
     </div>
     <h4>
     <script>
@@ -46,11 +49,11 @@
         if (loginForm.style.display === 'none') {
           loginForm.style.display = 'block';
           registerForm.style.display = 'none';
-          toggleFormBtn.innerText = 'Don\'t have an account? Register here';
+          toggleFormBtn.innerText = 'Not yet enlightened?';
         } else {
           loginForm.style.display = 'none';
           registerForm.style.display = 'block';
-          toggleFormBtn.innerText = 'Already have an account? Login here';
+          toggleFormBtn.innerText = 'Already enlightened?';
         }
       });
     </script>
