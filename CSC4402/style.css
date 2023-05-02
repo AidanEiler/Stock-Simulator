@@ -41,7 +41,7 @@ input[type="password"] {
   display: block;
   width: 100%;
   padding: 10px;
-  border-color: #4CAF50;
+  border-color: #1db954;
   font-size: 16px;
   margin-bottom: 25px;
   border: 1px solid #1db954;
@@ -114,10 +114,13 @@ h3{
 h4{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: normal;
-  color: #1db954;
+  color: #000000;
   font-size: 15px;
 }
 
+h4.link{
+  color: #57F287;
+}
 
 h5{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
