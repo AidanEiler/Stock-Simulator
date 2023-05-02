@@ -31,6 +31,7 @@ class Stock {
     let newPrice = this.price + change;
     this.price = Math.max(newPrice, 0.01); // Ensures price doesn't go below 0.01
     this.history.push(this.price);
+    return newPrice;
   }
 }
 
@@ -100,10 +101,13 @@ async function fetchStocks(){
   }
 }
 
+//Current prices of all of the stocks
+let currentPrices = [0,0,0,0,0];
+
 // Updates prices of all stocks
 function updatePrices() {
   for (let i = 0; i < stocks.length; i++) {
-    stocks[i].fluctuate();
+    currentPrices[i] = stocks[i].fluctuate();
     // check for stop-loss orders
     for (let j = 0; j < portfolio.length; j++) {
       if (portfolio[j].stopLossPrice !== null && stocks[i].ticker === portfolio[j].ticker && stocks[i].price <= portfolio[j].stopLossPrice) {
@@ -162,6 +166,16 @@ function displayPortfolio() {
     text(stock.ticker + ": " + stock.shares + " shares @ " + price + " (" + change + ", " + percentChange + "%) - Value: $" + value, 10, startY - 5);
     startY -= 20;
   }
+}
+
+// Calculates value of User Portfolio
+function calculatePortfolio() {
+  let totalPortfolioValue = 0;
+  for(let i = 0; i < portfolio.length; i++) {
+    totalPortfolioValue += portfolio[i].shares*currentPrices[i];
+  }
+
+  return totalPortfolioValue;
 }
 
 // Advances quarter
@@ -300,9 +314,15 @@ function setup() {
 
 //global variables for draw function
 quarterLength = 910;
-//every 100 frames is a day
+//every 10 frames is a day
 daysPassed = 0;
 startingCash = userCash;
+startingPortfolioValue = 0;
+
+quarterHighest = 0;
+quarterSecondHighest = 0;
+quarterSecondLowest = 99999999999999999999999;
+quarterLowest = 9999999999999999999999999;
 
 function draw() {
   background(255);
@@ -314,17 +334,46 @@ function draw() {
     return;
   }
   if(isLoggedIn){
-    if(daysPassed % quarterLength == 0) {
+    
+    currentPortfolioValue = calculatePortfolio();
+
+    if(currentPortfolioValue + userCash > quarterSecondHighest) {
+      if(currentPortfolioValue + userCash > quarterHighest) {
+        quarterHighest = currentPortfolioValue + userCash;
+      }
+      else {
+        quarterSecondHighest = currentPortfolioValue + userCash;
+      }
+    }
+    else {
+      if(currentPortfolioValue + userCash < quarterSecondLowest) {
+        if(currentPortfolioValue + userCash < quarterLowest) {
+          quarterLowest = currentPortfolioValue + userCash;
+        }
+        else {
+          quarterSecondLowest = currentPortfolioValue + userCash;
+        }
+      }
+    }
+
+    if(daysPassed % quarterLength == 0 && daysPassed != 0) {
       //updates user cash
       //fetchUserCashBalance(result.userId);
 
       let quarterInfo = {};
       quarterInfo.quarterNumber = daysPassed/quarterLength;
-      quarterInfo.quarterlyGains = userCash - startingCash;
+      quarterInfo.quarterlyGains = userCash - startingCash + currentPortfolioValue - startingPortfolioValue;
+      console.log("Cash and Portfolio : " + startingCash + "->" + userCash + " " + startingPortfolioValue + "->" + currentPortfolioValue);
+      quarterInfo.portfolioHighsAndLows = [quarterHighest,quarterSecondHighest,quarterSecondLowest,quarterLowest]
 
       updateQuarter(quarterInfo);
 
+      quarterHighest = 0;
+      quarterSecondHighest = 0;
+      quarterSecondLowest = 999999999999999999999;
+      quarterLowest = 99999999999999999;
       startingCash = userCash;
+      startingPortfolioValue = currentPortfolioValue;
     }
     
     fill(0);
