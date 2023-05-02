@@ -146,11 +146,11 @@ function displayStock() {
   }
 }
 
-function displayPortfolio() {  
+function displayPortfolio(currentPortfolioValue) {  
   fill(0);
   noStroke();
   textAlign(LEFT);
-  text("User: " + userName + ", Cash: $" + userCash.toFixed(2), 10, height - 10);
+  text("User: " + userName + ", Cash: $" + userCash.toFixed(2) + ", Portfolio: $" + currentPortfolioValue.toFixed(2), 10, height - 10);
   let startY = height - 50;
   for (let i = 0; i < portfolio.length; i++) {
     let stock = portfolio[i];
@@ -362,9 +362,9 @@ function draw() {
 
       let quarterInfo = {};
       quarterInfo.quarterNumber = daysPassed/quarterLength;
-      quarterInfo.quarterlyGains = userCash - startingCash + currentPortfolioValue - startingPortfolioValue;
-      console.log("Cash and Portfolio : " + startingCash + "->" + userCash + " " + startingPortfolioValue + "->" + currentPortfolioValue);
-      quarterInfo.portfolioHighsAndLows = [quarterHighest,quarterSecondHighest,quarterSecondLowest,quarterLowest]
+      quarterInfo.quarterlyGains = (userCash - startingCash + currentPortfolioValue - startingPortfolioValue).toFixed(2);
+      //console.log("Cash and Portfolio : " + startingCash + "->" + userCash + " " + startingPortfolioValue + "->" + currentPortfolioValue);
+      quarterInfo.portfolioHighsAndLows = [quarterHighest.toFixed(2),quarterSecondHighest.toFixed(2),quarterSecondLowest.toFixed(2),quarterLowest.toFixed(2)]
 
       updateQuarter(quarterInfo);
 
@@ -379,8 +379,14 @@ function draw() {
     fill(0);
     updatePrices();
     displayStock();
-    displayPortfolio();
+    displayPortfolio(currentPortfolioValue);
     drawInfoBtn();
+
+    fill(0);
+    noStroke();
+    textAlign(LEFT);
+    text("Day : "+(daysPassed/10).toFixed(0), 410, height - 10);
+
     daysPassed++;
     //console.log(daysPassed);
   }
