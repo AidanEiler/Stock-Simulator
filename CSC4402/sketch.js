@@ -397,7 +397,7 @@ function drawInfoBtn(){
 }
 
 function showInfo(){
-  alert('Press G and H to cycle through stocks.\nPress B to buy.\nSelect a stock in your portfolio by clicking its green bar.\nPress S to sell.');
+  alert('Press G and H to cycle through stocks.\nPress B to buy the currently viewed stock.\nSelect a stock in your portfolio by clicking its green bar.\nPress S to sell the selected stock.');
 }
 
 function keyPressed() {
