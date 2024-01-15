@@ -1,14 +1,3 @@
-# Contributors
-
-- Aidan Eiler
-- Andrew Schacht
-- Ford Morris
-- James Power
-- Jonathan Morse
-- Joseph Curtis
-- Lydia Parsa
-- Nate Canterbury
-
 # Abstract
 We plan on making a stock market simulation with prices that fluxgate with an Monte-Carlo based algorithm to simulate economic trends. The user will be able to input new stocks with starting values as well as a volatility value that can predict the magnitude of price fluctuations over time. The user will then be able to create a portfolio in order to interact with the stock market they've created. 
 
